@@ -435,14 +435,14 @@ Preamble and Postamble are excluded, too."
       ;; We also include the taglist, which is between the paragraphs and postamble
 	  
       (concat
-	   "<p>"
        (buffer-substring-no-properties
         meta-start
         meta-end)
+	   "<h2 class=\"post-title\">"
        (buffer-substring-no-properties
         title-start
         title-end)
-	   "</p>\n"
+	   "</h2>"
 	   ))))
 
 (defun org-static-blog-get-body (post-filename &optional exclude-title)
@@ -460,7 +460,7 @@ Preamble and Postamble are excluded, too."
        (point))
      (progn
        (goto-char (point-max))
-       (search-backward "<div id=\"postamble\" class=\"status\">")
+       (search-backward "<div id=\"postamble\">")
        (search-backward "</div>")
        (point)))))
 
@@ -560,7 +560,7 @@ The index, archive, tags, and RSS feed are not updated."
     org-static-blog-page-header
     "</head>\n"
     "<body>\n"
-    "<div id=\"preamble\" class=\"status\">\n"
+    "<div id=\"preamble\">\n"
     org-static-blog-page-preamble
     "</div>\n"
     "<div id=\"content\">\n"
@@ -568,9 +568,9 @@ The index, archive, tags, and RSS feed are not updated."
     (org-static-blog-render-post-content post-filename)
     (org-static-blog-post-postamble post-filename)
     "</div>\n"
-    "<div id=\"postamble\" class=\"status\">"
-	"<hr/>"
-	"<div id=\"other_posts\"><a href=\"https://wangz.me/\">Other posts</a></div>"
+    "<div id=\"postamble\">\n"
+	"<hr/>\n"
+	"<a id=\"other_posts\" href=\"" org-static-blog-publish-url "\">Other posts</a>"
     org-static-blog-page-postamble
     "</div>\n"
     "</body>\n"
@@ -622,7 +622,7 @@ posts as full text posts."
     org-static-blog-page-header
     "</head>\n"
     "<body>\n"
-    "<div id=\"preamble\" class=\"status\">"
+    "<div id=\"preamble\">"
     org-static-blog-page-preamble
     "</div>\n"
     "<div id=\"content\">\n"
@@ -631,7 +631,7 @@ posts as full text posts."
                         'org-static-blog-get-preview
                       'org-static-blog-get-body) post-filenames))
     "</div>\n"
-    "<div id=\"postamble\" class=\"status\">"
+    "<div id=\"postamble\">"
 	"<hr/>"
     org-static-blog-page-postamble
     "</div>\n"
@@ -737,7 +737,7 @@ blog post, but no post body."
       org-static-blog-page-header
       "</head>\n"
       "<body>\n"
-      "<div id=\"preamble\" class=\"status\">\n"
+      "<div id=\"preamble\">\n"
       org-static-blog-page-preamble
       "</div>\n"
       "<div id=\"content\">\n"
@@ -779,7 +779,7 @@ Posts are sorted in descending time."
     org-static-blog-page-header
     "</head>\n"
     "<body>\n"
-    "<div id=\"preamble\" class=\"status\">"
+    "<div id=\"preamble\">"
     org-static-blog-page-preamble
     "</div>\n"
     "<div id=\"content\">\n"
@@ -834,14 +834,14 @@ blog post, sorted by tags, but no post body."
       org-static-blog-page-header
       "</head>\n"
       "<body>\n"
-      "<div id=\"preamble\" class=\"status\">"
+      "<div id=\"preamble\">"
       org-static-blog-page-preamble
       "</div>\n"
       "<div id=\"content\">\n"
       "<h1 class=\"title\">" (org-static-blog-gettext 'tags) "</h1>\n<ul>\n"
       (apply 'concat (mapcar 'org-static-blog-assemble-tags-archive-tag tag-tree))
       "</ul></div>\n"
-	  "<div id=\"postamble\" class=\"status\">"
+	  "<div id=\"postamble\">"
 	  "<hr/>"
       org-static-blog-page-postamble
       "</div>\n"
